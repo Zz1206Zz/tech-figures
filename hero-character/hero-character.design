@@ -1,0 +1,71 @@
+{
+  "data": [
+    {
+      "id": "page-hero-section",
+      "title": "Hero Section",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1752011400000,
+      "canvasData": {
+        "x": 72,
+        "y": 36,
+        "group": 0
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/hero-section.html",
+        "interactions": []
+      }
+    },
+    {
+      "id": "page-hero-section-backup",
+      "title": "Hero Section Backup",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1752011400000,
+      "canvasData": {
+        "x": 72,
+        "y": 736,
+        "group": 0
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/hero-section-backup.html",
+        "interactions": []
+      }
+    },
+    {
+      "id": "image-001",
+      "title": "Hero 人物",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1752011400000,
+      "canvasData": {
+        "x": 96,
+        "y": 732
+      },
+      "devMetadata": {
+        "imageSrc": "assets/hero-person.png"
+      }
+    },
+    {
+      "id": "image-002",
+      "title": "Hero 人物备份",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1752011400000,
+      "canvasData": {
+        "x": 168,
+        "y": 1036
+      },
+      "devMetadata": {
+        "imageSrc": "assets/hero-person-backup.png"
+      }
+    }
+  ],
+  "config": {
+    "autoLayout": false,
+    "deviceType": "desktop",
+    "projectName": "Hero Section 动态效果",
+    "designLibrary": null,
+    "showEdge": false
+  }
+}

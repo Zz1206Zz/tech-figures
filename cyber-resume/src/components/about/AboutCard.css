@@ -1,0 +1,130 @@
+.about-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  transition: all var(--transition-base);
+  grid-column: span 2;
+}
+
+.about-card:hover {
+  border-color: var(--accent-primary);
+  box-shadow: var(--shadow-glow);
+}
+
+.about-card__header {
+  margin-bottom: 20px;
+}
+
+.about-card__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--accent-primary);
+}
+
+.about-card__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.about-card__item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.about-card__item-icon {
+  width: 36px;
+  height: 36px;
+  background: rgba(0, 212, 255, 0.1);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--accent-primary);
+}
+
+.about-card__item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.about-card__item-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.about-card__item-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.about-card__price {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px dashed rgba(245, 158, 11, 0.3);
+  border-radius: var(--radius-sm);
+}
+
+.about-card__price-icon {
+  color: var(--accent-warn);
+  flex-shrink: 0;
+}
+
+.about-card__price-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.about-card__price-label {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.about-card__price-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent-warn);
+}
+
+.about-card__price-note {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-align: right;
+}
+
+@media (max-width: 900px) {
+  .about-card {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 500px) {
+  .about-card__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-card__price {
+    flex-wrap: wrap;
+  }
+
+  .about-card__price-note {
+    margin-left: 0;
+    width: 100%;
+    text-align: left;
+  }
+}

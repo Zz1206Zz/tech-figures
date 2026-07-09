@@ -1,0 +1,56 @@
+{
+  "project": {
+    "name": "Hero Section 动态效果",
+    "operation": "create",
+    "designRead": "showcase landing hero / general audience / bold warm energy / low density / avoid purple neon AI hero",
+    "designDials": {
+      "layoutVariance": 4,
+      "motionIntensity": 4,
+      "visualDensity": 2
+    },
+    "styleDefinitionBrief": "Bold orange hero with character right-aligned, animated counter and text shuffle effects inspired by React Bits interactive components, warm energetic palette.",
+    "deviceType": "desktop",
+    "operatingMode": "free-explore"
+  },
+  "designSource": {
+    "operatingMode": "free-explore",
+    "brandCssPath": "colors_and_type.css",
+    "brandPrefix": "hero",
+    "styleConstraints": {
+      "radiusMax": 16,
+      "staticShadowAlphaMax": 0.05
+    },
+    "libraryIdentity": null
+  },
+  "pages": [
+    {
+      "nodeId": "page-hero-section",
+      "title": "Hero Section",
+      "htmlSrc": "pages/hero-section.html",
+      "pageIndex": 1,
+      "visualNorthStar": "A bold, energetic orange hero with the character confidently positioned on the right, animated numbers ticking up and text cycling through variations — feels alive and dynamic, like a React Bits interactive showcase.",
+      "compositionPattern": "asymmetric-split-60-40",
+      "continuityAnchors": {},
+      "componentPlan": [],
+      "imagePlan": [
+        {
+          "filename": "hero-person.jpg",
+          "role": "critical-hero",
+          "section": "hero",
+          "status": "generated"
+        }
+      ],
+      "chartsRequired": false
+    }
+  ],
+  "assets": [
+    {
+      "filename": "hero-person.jpg",
+      "role": "critical-hero",
+      "status": "generated",
+      "semanticDescription": "Confident professional person, studio photography, orange-toned lighting"
+    }
+  ],
+  "wiringPlan": [],
+  "hiddenInteractionPlan": []
+}

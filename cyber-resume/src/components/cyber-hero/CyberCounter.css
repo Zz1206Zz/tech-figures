@@ -1,0 +1,130 @@
+.cyber-counter {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 16px 20px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 107, 53, 0.3);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.cyber-counter::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #ff6b35, transparent);
+  animation: scanLine 2s ease-in-out infinite;
+}
+
+.cyber-counter__glitch-row {
+  display: flex;
+  gap: 2px;
+  font-family: 'Courier New', monospace;
+  font-size: 10px;
+  color: rgba(255, 107, 53, 0.3);
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+
+.cyber-counter__glitch-char {
+  animation: glitchFlicker 0.3s ease-in-out infinite;
+}
+
+@keyframes glitchFlicker {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
+.cyber-counter__value-wrapper {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.cyber-counter__prefix,
+.cyber-counter__suffix {
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  color: #ff8c42;
+  text-shadow: 0 0 10px rgba(255, 140, 66, 0.5);
+}
+
+.cyber-counter__value {
+  font-family: 'Courier New', monospace;
+  font-size: 36px;
+  font-weight: bold;
+  color: #ff6b35;
+  text-shadow: 
+    0 0 10px rgba(255, 107, 53, 0.8),
+    0 0 20px rgba(255, 107, 53, 0.6),
+    0 0 40px rgba(255, 107, 53, 0.4);
+  letter-spacing: 2px;
+  transition: all 0.1s ease-out;
+}
+
+.cyber-counter__value--animating {
+  animation: numberPulse 0.1s ease-in-out infinite;
+}
+
+@keyframes numberPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+.cyber-counter__label {
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  color: rgba(255, 200, 150, 0.8);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cyber-counter__label-bracket {
+  color: #ff6b35;
+  text-shadow: 0 0 5px rgba(255, 107, 53, 0.5);
+}
+
+.cyber-counter__scan-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(255, 107, 53, 0.03) 50%,
+    transparent 100%
+  );
+  animation: scanVertical 3s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes scanVertical {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+@keyframes scanLine {
+  0%, 100% { opacity: 0.5; transform: scaleX(0.8); }
+  50% { opacity: 1; transform: scaleX(1); }
+}
+
+@media (max-width: 768px) {
+  .cyber-counter {
+    padding: 12px 16px;
+  }
+
+  .cyber-counter__value {
+    font-size: 28px;
+  }
+}

@@ -1,0 +1,54 @@
+.counter-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.counter-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-sizing: border-box;
+  line-height: 1;
+}
+
+.counter-digit {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  text-align: center;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.counter-digit::before,
+.counter-digit::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: var(--gradient-height, 16px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.counter-digit::before {
+  top: 0;
+  background: linear-gradient(
+    to bottom,
+    var(--gradient-from, black),
+    var(--gradient-to, transparent)
+  );
+}
+
+.counter-digit::after {
+  bottom: 0;
+  background: linear-gradient(
+    to top,
+    var(--gradient-from, black),
+    var(--gradient-to, transparent)
+  );
+}

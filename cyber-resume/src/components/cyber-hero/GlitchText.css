@@ -1,0 +1,111 @@
+.glitch-text {
+  position: relative;
+  display: inline-block;
+  font-weight: bold;
+}
+
+.glitch-text__content {
+  position: relative;
+  z-index: 2;
+}
+
+.glitch-text__shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  opacity: 0;
+}
+
+.glitch-text--primary {
+  color: #ff6b35;
+  text-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+}
+
+.glitch-text--secondary {
+  color: #ffd166;
+  text-shadow: 0 0 10px rgba(255, 209, 102, 0.5);
+}
+
+.glitch-text--white {
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.glitch-text--active .glitch-text__shadow--red {
+  animation: glitchRed 0.3s ease-in-out;
+}
+
+.glitch-text--active .glitch-text__shadow--cyan {
+  animation: glitchCyan 0.3s ease-in-out;
+}
+
+.glitch-text__shadow--red {
+  color: #ff0040;
+  text-shadow: 0 0 10px rgba(255, 0, 64, 0.8);
+}
+
+.glitch-text__shadow--cyan {
+  color: #00ffff;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+}
+
+@keyframes glitchRed {
+  0% {
+    opacity: 0.8;
+    transform: translate(0);
+    clip-path: inset(0 0 0 0);
+  }
+  20% {
+    transform: translate(-3px, 2px);
+    clip-path: inset(20% 0 30% 0);
+  }
+  40% {
+    transform: translate(2px, -1px);
+    clip-path: inset(50% 0 10% 0);
+  }
+  60% {
+    transform: translate(-2px, 1px);
+    clip-path: inset(10% 0 60% 0);
+  }
+  80% {
+    transform: translate(1px, -2px);
+    clip-path: inset(70% 0 5% 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(0);
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes glitchCyan {
+  0% {
+    opacity: 0.8;
+    transform: translate(0);
+    clip-path: inset(0 0 0 0);
+  }
+  20% {
+    transform: translate(3px, -2px);
+    clip-path: inset(30% 0 20% 0);
+  }
+  40% {
+    transform: translate(-2px, 1px);
+    clip-path: inset(10% 0 50% 0);
+  }
+  60% {
+    transform: translate(2px, -1px);
+    clip-path: inset(60% 0 10% 0);
+  }
+  80% {
+    transform: translate(-1px, 2px);
+    clip-path: inset(5% 0 70% 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(0);
+    clip-path: inset(0 0 0 0);
+  }
+}

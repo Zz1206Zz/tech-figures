@@ -1,0 +1,19 @@
+.split-text {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+}
+
+.split-child {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+.split-child--block {
+  display: block;
+}
+
+.split-word {
+  display: inline-block;
+  white-space: nowrap;
+}

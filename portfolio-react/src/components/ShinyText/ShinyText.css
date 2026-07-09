@@ -1,0 +1,24 @@
+.shiny-text {
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-position: 0% 50%;
+  line-height: 1.2;
+  vertical-align: baseline;
+}
+
+.shiny-text--disabled {
+  background-image: none;
+}
+
+.shiny-text--pause-hover:hover {
+  animation-play-state: paused;
+}
+
+@keyframes shiny-text-slide {
+  0% {
+    background-position: -100% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}

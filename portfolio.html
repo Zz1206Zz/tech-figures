@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>曾学长 · 数学物理英语家教</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary: #000000;
+    --bg-secondary: #0a0a0a;
+    --bg-tertiary: #111111;
+    --bg-card: rgba(255, 255, 255, 0.04);
+    --bg-card-hover: rgba(255, 255, 255, 0.07);
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --text-tertiary: rgba(255, 255, 255, 0.45);
+    --accent-blue: #0071e3;
+    --accent-blue-hover: #2997ff;
+    --accent-orange: #ff9f0a;
+    --accent-purple: #bf5af2;
+    --accent-green: #30d158;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.12);
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: var(--accent-blue);
+    color: white;
+  }
+
+  .noise {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+
+  .gradient-orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.15;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .orb-1 {
+    width: 600px;
+    height: 600px;
+    background: var(--accent-blue);
+    top: -200px;
+    right: -100px;
+    animation: float1 20s ease-in-out infinite;
+  }
+
+  .orb-2 {
+    width: 500px;
+    height: 500px;
+    background: var(--accent-purple);
+    bottom: -150px;
+    left: -100px;
+    animation: float2 25s ease-in-out infinite;
+  }
+
+  @keyframes float1 {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(-50px, 30px); }
+  }
+
+  @keyframes float2 {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(40px, -30px); }
+  }
+
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 20px 0;
+    transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  nav.scrolled {
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 0;
+  }
+
+  .nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .nav-logo {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+  }
+
+  .nav-logo span {
+    color: var(--accent-blue);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .nav-links a:hover {
+    color: var(--text-primary);
+  }
+
+  .nav-cta {
+    padding: 8px 18px;
+    background: var(--text-primary);
+    color: var(--bg-primary) !important;
+    border-radius: 980px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s ease !important;
+  }
+
+  .nav-cta:hover {
+    transform: scale(1.04);
+    opacity: 0.9;
+  }
+
+  main {
+    position: relative;
+    z-index: 1;
+  }
+
+  section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 80px;
+    padding-bottom: 80px;
+    position: relative;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 980px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 32px;
+    width: fit-content;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) 0.2s forwards;
+  }
+
+  .hero-eyebrow .dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent-green);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  .hero-title {
+    font-size: clamp(48px, 8vw, 96px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+    margin-bottom: 24px;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) 0.35s forwards;
+  }
+
+  .hero-title .gradient-text {
+    background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 50%, var(--accent-orange) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(18px, 2.5vw, 24px);
+    font-weight: 400;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    max-width: 680px;
+    margin-bottom: 48px;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) 0.5s forwards;
+  }
+
+  .hero-subtitle strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) 0.65s forwards;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    border-radius: 980px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-primary {
+    background: var(--accent-blue);
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: var(--accent-blue-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0, 113, 227, 0.4);
+  }
+
+  .btn-secondary {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border: 1px solid var(--border-strong);
+  }
+
+  .btn-secondary:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border);
+    transform: translateY(-2px);
+  }
+
+  .btn-arrow {
+    transition: transform 0.3s ease;
+  }
+
+  .btn:hover .btn-arrow {
+    transform: translateX(4px);
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: fadeInUp 0.8s ease 1.2s forwards;
+  }
+
+  .hero-scroll span {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-tertiary);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .scroll-indicator {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--text-tertiary), transparent);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scroll-indicator::after {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--text-primary);
+    animation: scrollDown 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollDown {
+    0% { top: -100%; }
+    50%, 100% { top: 100%; }
+  }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .section-header {
+    margin-bottom: 64px;
+  }
+
+  .section-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent-blue);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+
+  .section-title span {
+    color: var(--text-tertiary);
+  }
+
+  .stats-section {
+    padding: 120px 32px;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  .stat-card {
+    padding: 48px 32px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .stat-card.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .stat-card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-strong);
+    transform: translateY(-4px);
+  }
+
+  .stat-number {
+    font-size: 56px;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+
+  .stat-number.blue { color: var(--accent-blue); }
+  .stat-number.orange { color: var(--accent-orange); }
+  .stat-number.purple { color: var(--accent-purple); }
+  .stat-number.green { color: var(--accent-green); }
+
+  .stat-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    line-height: 1.4;
+  }
+
+  .about-section {
+    padding: 120px 32px;
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .about-content {
+    opacity: 0;
+    transform: translateX(-30px);
+    transition: all 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  .about-content.in-view {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .about-text {
+    font-size: 17px;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+  }
+
+  .about-text strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .quote-block {
+    padding: 32px;
+    background: var(--bg-card);
+    border-left: 2px solid var(--accent-blue);
+    border-radius: 0 16px 16px 0;
+    margin-top: 32px;
+  }
+
+  .quote-text {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.7;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+  }
+
+  .quote-author {
+    font-size: 14px;
+    color: var(--text-tertiary);
+  }
+
+  .about-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    opacity: 0;
+    transform: translateX(30px);
+    transition: all 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) 0.2s;
+  }
+
+  .about-cards.in-view {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .info-card {
+    padding: 28px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    transition: all 0.3s ease;
+  }
+
+  .info-card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-strong);
+  }
+
+  .info-card-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 10px;
+  }
+
+  .info-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+  }
+
+  .info-icon.blue { background: rgba(0, 113, 227, 0.15); }
+  .info-icon.orange { background: rgba(255, 159, 10, 0.15); }
+  .info-icon.purple { background: rgba(191, 90, 242, 0.15); }
+  .info-icon.green { background: rgba(48, 209, 88, 0.15); }
+
+  .info-title {
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .info-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    padding-left: 54px;
+  }
+
+  .method-section {
+    padding: 120px 32px;
+  }
+
+  .method-intro {
+    max-width: 720px;
+    font-size: 18px;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    margin-bottom: 64px;
+  }
+
+  .method-intro strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .method-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .method-card {
+    padding: 40px 32px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+    opacity: 0;
+    transform: translateY(30px);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .method-card.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .method-card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-strong);
+    transform: translateY(-6px);
+  }
+
+  .method-number {
+    font-size: 72px;
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    line-height: 1;
+    margin-bottom: 24px;
+    background: linear-gradient(135deg, var(--text-primary), var(--text-tertiary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .method-title {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+
+  .method-desc {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+
+  .ai-section {
+    padding: 120px 32px;
+  }
+
+  .ai-card {
+    padding: 80px 64px;
+    background: linear-gradient(135deg, rgba(0, 113, 227, 0.08) 0%, rgba(191, 90, 242, 0.08) 100%);
+    border: 1px solid var(--border-strong);
+    border-radius: 32px;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  .ai-card.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .ai-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(0, 113, 227, 0.15), transparent 70%);
+    pointer-events: none;
+  }
+
+  .ai-content {
+    position: relative;
+    z-index: 1;
+    max-width: 640px;
+  }
+
+  .ai-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: rgba(0, 113, 227, 0.2);
+    border: 1px solid rgba(0, 113, 227, 0.3);
+    border-radius: 980px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent-blue-hover);
+    margin-bottom: 24px;
+  }
+
+  .ai-title {
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin-bottom: 20px;
+  }
+
+  .ai-desc {
+    font-size: 17px;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    margin-bottom: 32px;
+  }
+
+  .ai-desc strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .ai-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .ai-feature {
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    border-radius: 980px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+
+  .subjects-section {
+    padding: 120px 32px;
+  }
+
+  .subjects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .subject-card {
+    padding: 48px 36px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .subject-card.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .subject-card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-strong);
+    transform: translateY(-6px);
+  }
+
+  .subject-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin-bottom: 28px;
+  }
+
+  .subject-icon.math {
+    background: rgba(0, 113, 227, 0.15);
+  }
+
+  .subject-icon.physics {
+    background: rgba(255, 159, 10, 0.15);
+  }
+
+  .subject-icon.english {
+    background: rgba(48, 209, 88, 0.15);
+  }
+
+  .subject-name {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .subject-tagline {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-tertiary);
+    margin-bottom: 20px;
+  }
+
+  .subject-desc {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+
+  .why-section {
+    padding: 120px 32px;
+  }
+
+  .why-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .why-item {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: 40px;
+    align-items: center;
+    padding: 36px 24px;
+    border-bottom: 1px solid var(--border);
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px);
+    border-radius: 0;
+  }
+
+  .why-item:first-child {
+    border-top: 1px solid var(--border);
+  }
+
+  .why-item.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .why-item:hover {
+    background: var(--bg-card);
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .why-index {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent-blue);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .why-content h3 {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+
+  .why-content p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .why-arrow {
+    color: var(--text-tertiary);
+    font-size: 20px;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+
+  .why-item:hover .why-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .contact-section {
+    padding: 120px 32px;
+  }
+
+  .contact-card {
+    padding: 80px 64px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-strong);
+    border-radius: 32px;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  .contact-card.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .contact-eyebrow {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent-blue);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .contact-title {
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+
+  .contact-desc {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 560px;
+    margin: 0 auto 48px;
+    line-height: 1.7;
+  }
+
+  .contact-info {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+    margin-bottom: 48px;
+  }
+
+  .contact-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    border-radius: 980px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+
+  .contact-pill strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .qr-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .qr-code {
+    width: 180px;
+    height: 180px;
+    background: white;
+    border-radius: 20px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .qr-code svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .qr-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-tertiary);
+  }
+
+  footer {
+    padding: 48px 32px;
+    border-top: 1px solid var(--border);
+    position: relative;
+    z-index: 1;
+  }
+
+  .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .footer-text {
+    font-size: 13px;
+    color: var(--text-tertiary);
+  }
+
+  .footer-text strong {
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+
+  @media (max-width: 1024px) {
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .about-grid {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+
+    .method-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .subjects-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .why-item {
+      grid-template-columns: 50px 1fr;
+      gap: 20px;
+    }
+
+    .why-arrow {
+      display: none;
+    }
+
+    .ai-card,
+    .contact-card {
+      padding: 48px 32px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .nav-links {
+      display: none;
+    }
+
+    .nav-container {
+      padding: 0 20px;
+    }
+
+    section {
+      padding: 0 20px;
+    }
+
+    .stats-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .stat-card {
+      padding: 32px 20px;
+    }
+
+    .stat-number {
+      font-size: 40px;
+    }
+
+    .hero-actions {
+      flex-direction: column;
+    }
+
+    .btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .section-header {
+      margin-bottom: 40px;
+    }
+
+    .about-section,
+    .method-section,
+    .ai-section,
+    .subjects-section,
+    .why-section,
+    .contact-section,
+    .stats-section {
+      padding: 80px 20px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="noise"></div>
+<div class="gradient-orb orb-1"></div>
+<div class="gradient-orb orb-2"></div>
+
+<nav id="navbar">
+  <div class="nav-container">
+    <div class="nav-logo">ZENG<span>.</span></div>
+    <ul class="nav-links">
+      <li><a href="#about">关于</a></li>
+      <li><a href="#method">方法</a></li>
+      <li><a href="#subjects">科目</a></li>
+      <li><a href="#why">优势</a></li>
+      <li><a href="#contact" class="nav-cta">联系我</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <section class="hero">
+    <div class="hero-eyebrow">
+      <span class="dot"></span>
+      2026 届高考生 · 广州增城
+    </div>
+    <h1 class="hero-title">
+      你好，<br>
+      我是<span class="gradient-text">曾学长</span>
+    </h1>
+    <p class="hero-subtitle">
+      高考 <strong>608 分</strong> · 英语 <strong>137 分</strong><br>
+      专注小初高 <strong>数学 · 物理 · 英语</strong> 辅导
+    </p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn btn-primary">
+        预约试课
+        <span class="btn-arrow">→</span>
+      </a>
+      <a href="#about" class="btn btn-secondary">
+        了解更多
+      </a>
+    </div>
+    <div class="hero-scroll">
+      <span>向下滚动</span>
+      <div class="scroll-indicator"></div>
+    </div>
+  </section>
+
+  <section class="stats-section" id="stats">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number blue">608</div>
+        <div class="stat-label">2026 高考总分</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number orange">137</div>
+        <div class="stat-label">英语单科成绩</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number purple">3 科</div>
+        <div class="stat-label">数学 · 物理 · 英语</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number green">AI+</div>
+        <div class="stat-label">智能学习赋能</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-section" id="about">
+    <div class="section-header">
+      <div class="section-label">关于我</div>
+      <h2 class="section-title">刚走出考场的<br><span>高考过来人</span></h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-content">
+        <p class="about-text">
+          你好！我是<strong>曾学长</strong>，2026 届高考生，刚走出高考考场，对这三年来学习过的每一个知识点、做过的每一类题型，都还历历在目。
+        </p>
+        <p class="about-text">
+          我相信，<strong>"没有提不上去的分，只要方法通了就能解决一切"</strong>。很多同学觉得数学物理难，其实不是因为笨，而是没有找到正确的分析方法。一道题拿到手，不知道从哪里下手，这是因为没有人教你<strong>"怎么拆解题目"</strong>。
+        </p>
+        <p class="about-text">
+          我教的不是答案，是思考方式。
+        </p>
+        <div class="quote-block">
+          <div class="quote-text">"天道酬勤，但'勤'要用对方向。"</div>
+          <div class="quote-author">— 曾学长</div>
+        </div>
+      </div>
+      <div class="about-cards">
+        <div class="info-card">
+          <div class="info-card-header">
+            <div class="info-icon blue">📍</div>
+            <div class="info-title">所在地区</div>
+          </div>
+          <div class="info-desc">广州市增城区，可线下授课，也支持线上远程辅导</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-header">
+            <div class="info-icon orange">🎓</div>
+            <div class="info-title">当前身份</div>
+          </div>
+          <div class="info-desc">2026 届高考生，对最新命题趋势和考点记忆犹新</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-header">
+            <div class="info-icon purple">📚</div>
+            <div class="info-title">辅导范围</div>
+          </div>
+          <div class="info-desc">小学、初中、高中：数学、物理、英语全科辅导</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-header">
+            <div class="info-icon green">💻</div>
+            <div class="info-title">授课方式</div>
+          </div>
+          <div class="info-desc">线上一对一 · 线下面对面 · 灵活选择</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="method-section" id="method">
+    <div class="section-header">
+      <div class="section-label">教学方法</div>
+      <h2 class="section-title">授人以渔，<br><span>而非授人以鱼</span></h2>
+    </div>
+    <p class="method-intro">
+      我不教学生"怎么记住一道题的答案"，而是教他们 <strong>怎么分析一类题</strong>，怎么面对一道从没见过的新题时，一步步拆解它、找到突破口。
+    </p>
+    <div class="method-grid">
+      <div class="method-card">
+        <div class="method-number">01</div>
+        <h3 class="method-title">分析题型</h3>
+        <p class="method-desc">教你识别题目类型，快速定位考点，知道出题人在考什么。不再凭感觉做题，每一步都有依据。</p>
+      </div>
+      <div class="method-card">
+        <div class="method-number">02</div>
+        <h3 class="method-title">拆解思路</h3>
+        <p class="method-desc">把复杂问题拆解成小步骤，每一步都有逻辑可循。从"不知道怎么下手"到"一步步逼近答案"。</p>
+      </div>
+      <div class="method-card">
+        <div class="method-number">03</div>
+        <h3 class="method-title">举一反三</h3>
+        <p class="method-desc">掌握方法后能迁移到未知题型，真正学会"钓鱼"而不是只拿到"鱼"。遇到新题也不慌。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="ai-section" id="ai">
+    <div class="ai-card">
+      <div class="ai-content">
+        <div class="ai-tag">
+          <span>✨</span>
+          AI 赋能教学
+        </div>
+        <h2 class="ai-title">我自己就是 AI 学习的受益者</h2>
+        <p class="ai-desc">
+          我会教学生如何<strong>合理利用 AI 工具辅助学习</strong>：智能整理错题、生成个性化练习、知识点可视化讲解、构建知识图谱。
+        </p>
+        <p class="ai-desc">
+          AI 不是用来偷懒抄答案的，而是用来 <strong>放大学习效率</strong> 的利器。学会和 AI 协作，是面向未来最重要的学习能力。
+        </p>
+        <div class="ai-features">
+          <span class="ai-feature">智能错题整理</span>
+          <span class="ai-feature">个性化练习生成</span>
+          <span class="ai-feature">知识点可视化</span>
+          <span class="ai-feature">知识图谱构建</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="subjects-section" id="subjects">
+    <div class="section-header">
+      <div class="section-label">辅导科目</div>
+      <h2 class="section-title">三科全覆盖，<br><span>每科都有方法论</span></h2>
+    </div>
+    <div class="subjects-grid">
+      <div class="subject-card">
+        <div class="subject-icon math">🔬</div>
+        <h3 class="subject-name">数学辅导</h3>
+        <div class="subject-tagline">小学 → 高中 全覆盖</div>
+        <p class="subject-desc">
+          覆盖代数、几何、函数、概率统计、微积分等。擅长总结题型规律，用清晰的逻辑链帮学生建立解题框架。自己刚走完高考，对各模块难点和解题技巧了如指掌。
+        </p>
+      </div>
+      <div class="subject-card">
+        <div class="subject-icon physics">⚛</div>
+        <h3 class="subject-name">物理辅导</h3>
+        <div class="subject-tagline">力学 · 电磁学 · 热学 · 光学</div>
+        <p class="subject-desc">
+          精通力学、电磁学、热学、光学等物理核心模块。擅长用生活化的比喻和直观分析帮学生理解物理原理，建立物理模型思维，让抽象的公式变得有意义。
+        </p>
+      </div>
+      <div class="subject-card">
+        <div class="subject-icon english">🌐</div>
+        <h3 class="subject-name">英语辅导</h3>
+        <div class="subject-tagline">高考英语 137 分实战经验</div>
+        <p class="subject-desc">
+          覆盖语法精讲、阅读理解提分技巧、写作模板与高级表达、听力训练方法等。帮助基础薄弱的学生建立体系，也能帮尖子生突破瓶颈。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="why-section" id="why">
+    <div class="section-header">
+      <div class="section-label">为什么选我</div>
+      <h2 class="section-title">六个理由，<br><span>每一个都实在</span></h2>
+    </div>
+    <div class="why-list">
+      <div class="why-item">
+        <div class="why-index">01</div>
+        <div class="why-content">
+          <h3>最新鲜的高考经验</h3>
+          <p>2026 年刚考完高考，对最新题型、命题方向、应试策略记忆犹新，不像很多大学生已经遗忘了高中的知识细节。</p>
+        </div>
+        <div class="why-arrow">→</div>
+      </div>
+      <div class="why-item">
+        <div class="why-index">02</div>
+        <div class="why-content">
+          <h3>英语实力过硬</h3>
+          <p>高考英语 137 分，语法基础扎实，阅读理解和写作都有自己的方法论，能从听说读写全方位提升英语水平。</p>
+        </div>
+        <div class="why-arrow">→</div>
+      </div>
+      <div class="why-item">
+        <div class="why-index">03</div>
+        <div class="why-content">
+          <h3>授人以渔的教学理念</h3>
+          <p>不搞题海战术，不教死记硬背。注重方法传授和思维训练，让学生真正具备独立解题能力，遇到新题不慌。</p>
+        </div>
+        <div class="why-arrow">→</div>
+      </div>
+      <div class="why-item">
+        <div class="why-index">04</div>
+        <div class="why-content">
+          <h3>AI 赋能，效率翻倍</h3>
+          <p>熟练运用 AI 工具辅助教学，能为学生定制个性化学习方案、智能错题分析、知识点可视化，让学习更高效。</p>
+        </div>
+        <div class="why-arrow">→</div>
+      </div>
+      <div class="why-item">
+        <div class="why-index">05</div>
+        <div class="why-content">
+          <h3>强烈进取心，教学热情高</h3>
+          <p>我自己就是靠积极主动的学习态度和正确的方法考出 608 分的。我会把这份热情和成长型思维传递给学生。</p>
+        </div>
+        <div class="why-arrow">→</div>
+      </div>
+      <div class="why-item">
+        <div class="why-index">06</div>
+        <div class="why-content">
+          <h3>年龄相近，沟通零障碍</h3>
+          <p>作为刚考完高考的学长，和学生之间没有代沟，更懂学生的困惑和卡点在哪里，能用学生听得懂的方式讲清楚问题。</p>
+        </div>
+        <div class="why-arrow">→</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact-section" id="contact">
+    <div class="contact-card">
+      <div class="contact-eyebrow">联系我</div>
+      <h2 class="contact-title">随时欢迎咨询</h2>
+      <p class="contact-desc">
+        如果你或你的孩子需要数学、物理、英语辅导，<br>
+        或者只是想聊聊学习方法，欢迎扫码添加微信。
+      </p>
+      <div class="contact-info">
+        <div class="contact-pill">
+          📍 <strong>广州增城</strong> · 线上线下均可
+        </div>
+        <div class="contact-pill">
+          💰 <strong>60-100 元/小时</strong> · 价格面议
+        </div>
+      </div>
+      <div class="qr-wrapper">
+        <div class="qr-code">
+          <svg viewBox="0 0 100 100" fill="black">
+            <rect x="10" y="10" width="25" height="25" fill="white"/>
+            <rect x="12" y="12" width="21" height="21" fill="black"/>
+            <rect x="15" y="15" width="15" height="15" fill="white"/>
+            <rect x="17" y="17" width="11" height="11" fill="black"/>
+            
+            <rect x="65" y="10" width="25" height="25" fill="white"/>
+            <rect x="67" y="12" width="21" height="21" fill="black"/>
+            <rect x="70" y="15" width="15" height="15" fill="white"/>
+            <rect x="72" y="17" width="11" height="11" fill="black"/>
+            
+            <rect x="10" y="65" width="25" height="25" fill="white"/>
+            <rect x="12" y="67" width="21" height="21" fill="black"/>
+            <rect x="15" y="70" width="15" height="15" fill="white"/>
+            <rect x="17" y="72" width="11" height="11" fill="black"/>
+            
+            <rect x="40" y="12" width="5" height="5"/>
+            <rect x="50" y="12" width="5" height="5"/>
+            <rect x="58" y="12" width="5" height="5"/>
+            <rect x="42" y="20" width="20" height="3"/>
+            <rect x="45" y="28" width="15" height="3"/>
+            
+            <rect x="40" y="40" width="5" height="5"/>
+            <rect x="50" y="40" width="5" height="5"/>
+            <rect x="60" y="40" width="5" height="5"/>
+            <rect x="45" y="48" width="20" height="3"/>
+            <rect x="40" y="55" width="25" height="3"/>
+            
+            <rect x="65" y="42" width="5" height="5"/>
+            <rect x="75" y="45" width="15" height="3"/>
+            <rect x="85" y="52" width="5" height="5"/>
+            <rect x="68" y="55" width="20" height="3"/>
+            
+            <rect x="42" y="68" width="20" height="3"/>
+            <rect x="40" y="75" width="5" height="5"/>
+            <rect x="50" y="72" width="15" height="3"/>
+            <rect x="58" y="80" width="10" height="5"/>
+            <rect x="45" y="85" width="15" height="3"/>
+            
+            <rect x="65" y="65" width="5" height="5"/>
+            <rect x="75" y="68" width="15" height="3"/>
+            <rect x="68" y="75" width="20" height="3"/>
+            <rect x="80" y="82" width="10" height="5"/>
+            <rect x="70" y="88" width="18" height="3"/>
+          </svg>
+        </div>
+        <div class="qr-label">微信扫一扫，添加好友</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-content">
+    <div class="footer-text">© 2026 <strong>曾学长家教</strong> · 广州增城</div>
+    <div class="footer-text">天道酬勤</div>
+  </div>
+</footer>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
+    }
+  });
+
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, index) => {
+      if (entry.isIntersecting) {
+        const delay = Array.from(entry.target.parentElement.children).indexOf(entry.target) * 0.1;
+        entry.target.style.transitionDelay = `${delay}s`;
+        entry.target.classList.add('in-view');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.stat-card, .method-card, .subject-card, .why-item, .about-content, .about-cards, .ai-card, .contact-card').forEach(el => {
+    observer.observe(el);
+  });
+
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

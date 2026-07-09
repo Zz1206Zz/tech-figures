@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cyberpunk Hero Section</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      overflow-x: hidden;
+      background: #ff5a00;
+    }
+
+    .cyber-hero {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      overflow: hidden;
+      background: #ff5a00;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cyber-hero__bg-gradient {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(ellipse at 30% 20%, rgba(255, 200, 100, 0.3) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 60%, rgba(255, 100, 0, 0.2) 0%, transparent 50%),
+        linear-gradient(135deg, #ff6b1a 0%, #ff5a00 50%, #ff4d00 100%);
+      z-index: 0;
+    }
+
+    #particleCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .cyber-hero__scanlines {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.05) 2px,
+        rgba(0, 0, 0, 0.05) 4px
+      );
+      z-index: 10;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    .cyber-hero__grid-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .cyber-hero__content {
+      position: relative;
+      z-index: 5;
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 60px 60px 0;
+      gap: 40px;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .cyber-hero__left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      min-width: 0;
+      padding-bottom: 80px;
+      align-self: center;
+    }
+
+    .cyber-hero__terminal-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 18px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      width: fit-content;
+      backdrop-filter: blur(10px);
+    }
+
+    .cyber-hero__terminal-dots {
+      display: flex;
+      gap: 8px;
+    }
+
+    .cyber-hero__terminal-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .cyber-hero__terminal-dot--red {
+      background: #ff5f57;
+    }
+
+    .cyber-hero__terminal-dot--yellow {
+      background: #febc2e;
+    }
+
+    .cyber-hero__terminal-dot--green {
+      background: #28c840;
+    }
+
+    .cyber-hero__terminal-title {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.8);
+      letter-spacing: 0.5px;
+      font-weight: 500;
+    }
+
+    .cyber-hero__title {
+      font-size: clamp(48px, 7vw, 88px);
+      font-weight: 900;
+      line-height: 1;
+      margin: 0;
+      letter-spacing: -1px;
+      text-transform: uppercase;
+      color: #ffffff;
+      position: relative;
+    }
+
+    .cyber-hero__title-glitch {
+      position: relative;
+      display: inline-block;
+    }
+
+    .glitch-shadow {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .glitch-shadow--red {
+      color: #ff0040;
+      text-shadow: 0 0 10px rgba(255, 0, 64, 0.6);
+    }
+
+    .glitch-shadow--cyan {
+      color: #00e5ff;
+      text-shadow: 0 0 10px rgba(0, 229, 255, 0.6);
+    }
+
+    .glitch-active .glitch-shadow--red {
+      animation: glitchRed 0.3s ease-in-out;
+    }
+
+    .glitch-active .glitch-shadow--cyan {
+      animation: glitchCyan 0.3s ease-in-out;
+    }
+
+    @keyframes glitchRed {
+      0% { opacity: 0.8; transform: translate(0); clip-path: inset(0 0 0 0); }
+      20% { transform: translate(-3px, 2px); clip-path: inset(20% 0 30% 0); }
+      40% { transform: translate(2px, -1px); clip-path: inset(50% 0 10% 0); }
+      60% { transform: translate(-2px, 1px); clip-path: inset(10% 0 60% 0); }
+      80% { transform: translate(1px, -2px); clip-path: inset(70% 0 5% 0); }
+      100% { opacity: 0; transform: translate(0); clip-path: inset(0 0 0 0); }
+    }
+
+    @keyframes glitchCyan {
+      0% { opacity: 0.8; transform: translate(0); clip-path: inset(0 0 0 0); }
+      20% { transform: translate(3px, -2px); clip-path: inset(30% 0 20% 0); }
+      40% { transform: translate(-2px, 1px); clip-path: inset(10% 0 50% 0); }
+      60% { transform: translate(2px, -1px); clip-path: inset(60% 0 10% 0); }
+      80% { transform: translate(-1px, 2px); clip-path: inset(5% 0 70% 0); }
+      100% { opacity: 0; transform: translate(0); clip-path: inset(0 0 0 0); }
+    }
+
+    .cyber-hero__subtitle {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .cyber-hero__subtitle-tag {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 14px;
+      color: #ffffff;
+      padding: 8px 18px;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+      font-weight: 500;
+    }
+
+    .cyber-hero__typewriter {
+      margin-top: 4px;
+    }
+
+    .typewriter-text {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 15px;
+      color: #ffffff;
+      padding: 12px 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      width: fit-content;
+      backdrop-filter: blur(10px);
+      font-weight: 500;
+    }
+
+    .typewriter-text__prefix {
+      color: #ffe4b5;
+      font-weight: 700;
+    }
+
+    .typewriter-text__content {
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+
+    .typewriter-text__cursor {
+      color: #ffffff;
+      font-weight: bold;
+      animation: blink 0.53s step-end infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .cyber-hero__counters {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 8px;
+    }
+
+    .cyber-counter {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      padding: 20px 24px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .cyber-counter::before {
+      display: none;
+    }
+
+    .cyber-counter__glitch-row {
+      display: none;
+    }
+
+    .cyber-counter__value-wrapper {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+    }
+
+    .cyber-counter__suffix {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 500;
+    }
+
+    .cyber-counter__value {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 42px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -1px;
+      transition: all 0.1s ease-out;
+      line-height: 1;
+    }
+
+    .cyber-counter__label {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.7);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 500;
+    }
+
+    .cyber-counter__label-bracket {
+      display: none;
+    }
+
+    .cyber-counter__scan-line {
+      display: none;
+    }
+
+    .cyber-hero__stats-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 28px;
+      margin-top: 8px;
+      padding: 16px 24px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      width: fit-content;
+      backdrop-filter: blur(10px);
+    }
+
+    .cyber-hero__stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .cyber-hero__stat-label {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.6);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .cyber-hero__stat-value {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 14px;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+    }
+
+    .cyber-hero__stat-value--online {
+      color: #4ade80;
+    }
+
+    .cyber-hero__stat-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 8px rgba(74, 222, 128, 0.6);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.9); }
+    }
+
+    .cyber-hero__right {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      height: 100%;
+    }
+
+    .cyber-hero__image-wrapper {
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      height: 100%;
+    }
+
+    .cyber-hero__image-frame {
+      position: relative;
+      width: 420px;
+      height: auto;
+      border: none;
+      border-radius: 0;
+      overflow: visible;
+      background: transparent;
+      box-shadow: none;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .cyber-hero__image-corner {
+      display: none;
+    }
+
+    .cyber-hero__image-scanline {
+      display: none;
+    }
+
+    .cyber-hero__image-glow {
+      display: none;
+    }
+
+    .cyber-hero__image {
+      width: 100%;
+      height: auto;
+      max-height: 85vh;
+      object-fit: contain;
+      object-position: bottom center;
+      filter: none;
+      position: relative;
+      z-index: 3;
+      display: block;
+      vertical-align: bottom;
+    }
+
+    .cyber-hero__image-overlay {
+      display: none;
+    }
+
+    .cyber-hero__hud-item {
+      position: absolute;
+      font-family: 'Courier New', monospace;
+      font-size: 10px;
+      color: rgba(255, 107, 53, 0.9);
+      padding: 3px 8px;
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(255, 107, 53, 0.4);
+      letter-spacing: 1px;
+      text-shadow: 0 0 5px rgba(255, 107, 53, 0.5);
+    }
+
+    .cyber-hero__hud-item--top-left { top: 12px; left: 12px; }
+    .cyber-hero__hud-item--top-right { top: 12px; right: 12px; }
+    .cyber-hero__hud-item--bottom-left { bottom: 12px; left: 12px; }
+    .cyber-hero__hud-item--bottom-right { 
+      bottom: 12px; right: 12px; 
+      color: rgba(40, 200, 64, 0.9);
+      border-color: rgba(40, 200, 64, 0.4);
+      text-shadow: 0 0 5px rgba(40, 200, 64, 0.5);
+    }
+
+    .cyber-hero__data-streams {
+      display: none;
+    }
+
+    .cyber-hero__bottom-bar {
+      display: none;
+    }
+
+    .cyber-hero__bottom-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .cyber-hero__bottom-label {
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      color: rgba(255, 140, 66, 0.6);
+      letter-spacing: 1px;
+    }
+
+    .cyber-hero__bottom-bar-fill {
+      width: 100px;
+      height: 6px;
+      background: rgba(255, 107, 53, 0.1);
+      border: 1px solid rgba(255, 107, 53, 0.3);
+      border-radius: 1px;
+      overflow: hidden;
+    }
+
+    .cyber-hero__bottom-bar-progress {
+      height: 100%;
+      background: linear-gradient(90deg, #ff6b35, #ffd166);
+      box-shadow: 0 0 10px rgba(255, 107, 53, 0.6);
+      animation: bar-pulse 2s ease-in-out infinite;
+    }
+
+    .cyber-hero__bottom-bar-progress--stable {
+      background: linear-gradient(90deg, #28c840, #7dff9a);
+      box-shadow: 0 0 10px rgba(40, 200, 64, 0.6);
+    }
+
+    @keyframes bar-pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
+    }
+
+    .cyber-hero__bottom-value {
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      color: #ffd166;
+      min-width: 35px;
+      text-shadow: 0 0 5px rgba(255, 209, 102, 0.5);
+    }
+
+    .cyber-hero__bottom-item--time {
+      margin-left: auto;
+    }
+
+    .cyber-hero__time {
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      color: #ff6b35;
+      text-shadow: 0 0 10px rgba(255, 107, 53, 0.6);
+      letter-spacing: 2px;
+    }
+
+    @media (max-width: 1024px) {
+      .cyber-hero__content {
+        flex-direction: column-reverse;
+        padding: 40px 32px 0;
+        gap: 20px;
+        text-align: center;
+        align-items: center;
+      }
+
+      .cyber-hero__left {
+        align-items: center;
+        max-width: 600px;
+        padding-bottom: 40px;
+      }
+
+      .cyber-hero__terminal-header {
+        align-self: center;
+      }
+
+      .cyber-hero__counters {
+        width: 100%;
+      }
+
+      .cyber-hero__stats-row {
+        justify-content: center;
+      }
+
+      .cyber-hero__image-frame {
+        width: 320px;
+      }
+
+      .cyber-hero__right {
+        height: auto;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .cyber-hero__content {
+        padding: 24px 16px 0;
+        gap: 16px;
+      }
+
+      .cyber-hero__image-frame {
+        width: 260px;
+      }
+
+      .cyber-hero__counters {
+        grid-template-columns: 1fr;
+      }
+
+      .cyber-hero__stats-row {
+        gap: 16px;
+        padding: 12px 16px;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="cyber-hero">
+    <div class="cyber-hero__bg-gradient"></div>
+    <canvas id="particleCanvas"></canvas>
+    <div class="cyber-hero__scanlines"></div>
+    <div class="cyber-hero__grid-overlay"></div>
+
+    <div class="cyber-hero__content">
+      <div class="cyber-hero__left">
+        <div class="cyber-hero__terminal-header">
+          <div class="cyber-hero__terminal-dots">
+            <span class="cyber-hero__terminal-dot cyber-hero__terminal-dot--red"></span>
+            <span class="cyber-hero__terminal-dot cyber-hero__terminal-dot--yellow"></span>
+            <span class="cyber-hero__terminal-dot cyber-hero__terminal-dot--green"></span>
+          </div>
+          <span class="cyber-hero__terminal-title">cyber_system://user_profile</span>
+        </div>
+
+        <h1 class="cyber-hero__title">
+          <span class="cyber-hero__title-glitch" id="glitchTitle">
+            ZENG XUEZHANG
+            <span class="glitch-shadow glitch-shadow--red">ZENG XUEZHANG</span>
+            <span class="glitch-shadow glitch-shadow--cyan">ZENG XUEZHANG</span>
+          </span>
+        </h1>
+
+        <div class="cyber-hero__subtitle">
+          <span class="cyber-hero__subtitle-tag">[ EDUCATOR ]</span>
+          <span class="cyber-hero__subtitle-tag">[ AI ENTHUSIAST ]</span>
+          <span class="cyber-hero__subtitle-tag">[ 608 GAOKAO ]</span>
+        </div>
+
+        <div class="cyber-hero__typewriter">
+          <div class="typewriter-text">
+            <span class="typewriter-text__prefix">></span>
+            <span class="typewriter-text__content" id="typewriterText"></span>
+            <span class="typewriter-text__cursor">_</span>
+          </div>
+        </div>
+
+        <div class="cyber-hero__counters">
+          <div class="cyber-counter">
+            <div class="cyber-counter__glitch-row" id="glitchRow1"></div>
+            <div class="cyber-counter__value-wrapper">
+              <span class="cyber-counter__value" id="counter1">0</span>
+              <span class="cyber-counter__suffix">分</span>
+            </div>
+            <div class="cyber-counter__label">
+              <span class="cyber-counter__label-bracket">[</span>
+              高考总分
+              <span class="cyber-counter__label-bracket">]</span>
+            </div>
+            <div class="cyber-counter__scan-line"></div>
+          </div>
+          <div class="cyber-counter">
+            <div class="cyber-counter__glitch-row" id="glitchRow2"></div>
+            <div class="cyber-counter__value-wrapper">
+              <span class="cyber-counter__value" id="counter2">0</span>
+              <span class="cyber-counter__suffix">分</span>
+            </div>
+            <div class="cyber-counter__label">
+              <span class="cyber-counter__label-bracket">[</span>
+              英语成绩
+              <span class="cyber-counter__label-bracket">]</span>
+            </div>
+            <div class="cyber-counter__scan-line"></div>
+          </div>
+          <div class="cyber-counter">
+            <div class="cyber-counter__glitch-row" id="glitchRow3"></div>
+            <div class="cyber-counter__value-wrapper">
+              <span class="cyber-counter__value" id="counter3">0</span>
+              <span class="cyber-counter__suffix">+</span>
+            </div>
+            <div class="cyber-counter__label">
+              <span class="cyber-counter__label-bracket">[</span>
+              辅导学生
+              <span class="cyber-counter__label-bracket">]</span>
+            </div>
+            <div class="cyber-counter__scan-line"></div>
+          </div>
+        </div>
+
+        <div class="cyber-hero__stats-row">
+          <div class="cyber-hero__stat-item">
+            <span class="cyber-hero__stat-label">STATUS</span>
+            <span class="cyber-hero__stat-value cyber-hero__stat-value--online">
+              <span class="cyber-hero__stat-dot"></span>
+              ONLINE
+            </span>
+          </div>
+          <div class="cyber-hero__stat-item">
+            <span class="cyber-hero__stat-label">LOCATION</span>
+            <span class="cyber-hero__stat-value">CHENGDU</span>
+          </div>
+          <div class="cyber-hero__stat-item">
+            <span class="cyber-hero__stat-label">SYSTEM</span>
+            <span class="cyber-hero__stat-value">v2.0.77</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cyber-hero__right">
+        <div class="cyber-hero__image-wrapper">
+          <div class="cyber-hero__image-frame">
+            <div class="cyber-hero__image-corner cyber-hero__image-corner--tl"></div>
+            <div class="cyber-hero__image-corner cyber-hero__image-corner--tr"></div>
+            <div class="cyber-hero__image-corner cyber-hero__image-corner--bl"></div>
+            <div class="cyber-hero__image-corner cyber-hero__image-corner--br"></div>
+            
+            <div class="cyber-hero__image-scanline"></div>
+            <div class="cyber-hero__image-glow"></div>
+            
+            <img
+              src="https://picsum.photos/seed/cyberhero/400/500"
+              alt="Cyber Hero"
+              class="cyber-hero__image"
+              id="heroImage"
+              onerror="this.style.display='none'; document.getElementById('heroFallback').style.display='flex';"
+            />
+            <div id="heroFallback" style="display:none; width:100%; height:auto; align-items:center; justify-content:center; background: transparent; position:relative; z-index:3;">
+              <svg viewBox="0 0 200 250" width="280" height="350" style="filter: drop-shadow(0 10px 30px rgba(0,0,0,0.2));">
+                <defs>
+                  <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.9" />
+                    <stop offset="100%" style="stop-color:#ffe4b5;stop-opacity:0.9" />
+                  </linearGradient>
+                </defs>
+                <circle cx="100" cy="70" r="45" fill="none" stroke="url(#grad1)" stroke-width="3"/>
+                <path d="M100 115 Q60 115 40 160 L40 230 L160 230 L160 160 Q140 115 100 115 Z" fill="none" stroke="url(#grad1)" stroke-width="3"/>
+                <circle cx="85" cy="65" r="5" fill="#ffffff" opacity="0.8"/>
+                <circle cx="115" cy="65" r="5" fill="#ffffff" opacity="0.8"/>
+                <path d="M90 85 Q100 92 110 85" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+                <line x1="30" y1="140" x2="10" y2="140" stroke="#ffffff" stroke-width="2" opacity="0.5"/>
+                <line x1="170" y1="140" x2="190" y2="140" stroke="#ffffff" stroke-width="2" opacity="0.5"/>
+                <line x1="30" y1="170" x2="15" y2="170" stroke="#ffe4b5" stroke-width="2" opacity="0.5"/>
+                <line x1="170" y1="170" x2="185" y2="170" stroke="#ffe4b5" stroke-width="2" opacity="0.5"/>
+                <rect x="25" y="195" width="20" height="4" fill="#ffffff" opacity="0.4"/>
+                <rect x="155" y="195" width="20" height="4" fill="#ffffff" opacity="0.4"/>
+              </svg>
+            </div>
+
+            <div class="cyber-hero__image-overlay">
+              <div class="cyber-hero__hud-item cyber-hero__hud-item--top-left">
+                <span>SUBJECT_01</span>
+              </div>
+              <div class="cyber-hero__hud-item cyber-hero__hud-item--top-right">
+                <span>ID: 8877</span>
+              </div>
+              <div class="cyber-hero__hud-item cyber-hero__hud-item--bottom-left">
+                <span>LEVEL: S</span>
+              </div>
+              <div class="cyber-hero__hud-item cyber-hero__hud-item--bottom-right">
+                <span>SYNC OK</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="cyber-hero__data-streams">
+            <div class="cyber-hero__data-stream cyber-hero__data-stream--1" id="dataStream1"></div>
+            <div class="cyber-hero__data-stream cyber-hero__data-stream--2" id="dataStream2"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cyber-hero__bottom-bar">
+      <div class="cyber-hero__bottom-item">
+        <span class="cyber-hero__bottom-label">CPU</span>
+        <div class="cyber-hero__bottom-bar-fill">
+          <div class="cyber-hero__bottom-bar-progress" style="width: 67%"></div>
+        </div>
+        <span class="cyber-hero__bottom-value">67%</span>
+      </div>
+      <div class="cyber-hero__bottom-item">
+        <span class="cyber-hero__bottom-label">MEMORY</span>
+        <div class="cyber-hero__bottom-bar-fill">
+          <div class="cyber-hero__bottom-bar-progress" style="width: 82%"></div>
+        </div>
+        <span class="cyber-hero__bottom-value">82%</span>
+      </div>
+      <div class="cyber-hero__bottom-item">
+        <span class="cyber-hero__bottom-label">NETWORK</span>
+        <div class="cyber-hero__bottom-bar-fill">
+          <div class="cyber-hero__bottom-bar-progress cyber-hero__bottom-bar-progress--stable" style="width: 95%"></div>
+        </div>
+        <span class="cyber-hero__bottom-value">95%</span>
+      </div>
+      <div class="cyber-hero__bottom-item cyber-hero__bottom-item--time">
+        <span class="cyber-hero__time" id="cyberTime">00:00:00</span>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // ============ 粒子背景 ============
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let mouse = { x: -1000, y: -1000 };
+    const particles = [];
+
+    const colors = ['#ffffff', '#ffe4b5', '#ffd700', '#fff5e6', '#ffcc80', '#ffe0b2'];
+
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+
+    resizeCanvas();
+
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+
+      reset() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.size = Math.random() * 3 + 1;
+        this.speedX = (Math.random() - 0.5) * 0.6;
+        this.speedY = (Math.random() - 0.5) * 0.6;
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+        this.opacity = Math.random() * 0.5 + 0.3;
+        this.life = Math.random() * 200 + 100;
+        this.maxLife = this.life;
+      }
+
+      update() {
+        const dx = mouse.x - this.x;
+        const dy = mouse.y - this.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < 150 && distance > 0) {
+          const force = (150 - distance) / 150;
+          this.speedX -= (dx / distance) * force * 0.015;
+          this.speedY -= (dy / distance) * force * 0.015;
+        }
+
+        this.x += this.speedX;
+        this.y += this.speedY;
+
+        this.speedX *= 0.99;
+        this.speedY *= 0.99;
+
+        this.life--;
+        if (this.life <= 0 || this.x < -50 || this.x > width + 50 || this.y < -50 || this.y > height + 50) {
+          this.reset();
+        }
+
+        this.opacity = (this.life / this.maxLife) * 0.6 + 0.2;
+      }
+
+      draw() {
+        if (isNaN(this.x) || isNaN(this.y) || isNaN(this.size) || this.size <= 0) return;
+
+        const safeSize = Math.max(0.5, this.size);
+        ctx.globalAlpha = this.opacity;
+
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, safeSize, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+
+        const glowSize = safeSize * 2.5;
+        const gradient = ctx.createRadialGradient(
+          this.x, this.y, 0.1,
+          this.x, this.y, glowSize
+        );
+        gradient.addColorStop(0, this.color + '40');
+        gradient.addColorStop(1, 'transparent');
+        ctx.fillStyle = gradient;
+        ctx.fill();
+
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    const particleCount = Math.min(150, Math.floor((width * height) / 12000));
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle());
+    }
+
+    function drawConnections() {
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < 100) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            const opacity = (1 - distance / 100) * 0.12;
+            ctx.strokeStyle = `rgba(255, 255, 255, ${opacity})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+
+      drawConnections();
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    window.addEventListener('resize', resizeCanvas);
+
+    window.addEventListener('mousemove', (e) => {
+      mouse = { x: e.clientX, y: e.clientY };
+    });
+
+    // ============ 打字机效果 ============
+    const typingTexts = [
+      'INITIALIZING SYSTEM...',
+      'LOADING DATA MODULES...',
+      'CONNECTING TO NETWORK...',
+      'SYSTEM ONLINE. READY.',
+      'AI ASSISTANT ACTIVATED',
+    ];
+
+    let typingIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    const typewriterEl = document.getElementById('typewriterText');
+
+    function typeWriter() {
+      const currentText = typingTexts[typingIndex];
+      const speed = isDeleting ? 40 : 80;
+
+      if (!isDeleting) {
+        if (charIndex < currentText.length) {
+          typewriterEl.textContent = currentText.slice(0, charIndex + 1);
+          charIndex++;
+          setTimeout(typeWriter, speed);
+        } else {
+          setTimeout(() => { isDeleting = true; typeWriter(); }, 1800);
+        }
+      } else {
+        if (charIndex > 0) {
+          typewriterEl.textContent = currentText.slice(0, charIndex - 1);
+          charIndex--;
+          setTimeout(typeWriter, speed);
+        } else {
+          isDeleting = false;
+          typingIndex = (typingIndex + 1) % typingTexts.length;
+          setTimeout(typeWriter, 400);
+        }
+      }
+    }
+
+    typeWriter();
+
+    // ============ 数字计数器动画 ============
+    function animateCounter(elementId, target, duration = 2000) {
+      const element = document.getElementById(elementId);
+      const startTime = performance.now();
+      const startValue = 0;
+
+      function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+        const currentValue = Math.floor(startValue + (target - startValue) * easeOutQuart);
+        element.textContent = currentValue.toLocaleString();
+
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        } else {
+          startFluctuation(element, target);
+        }
+      }
+
+      requestAnimationFrame(update);
+    }
+
+    function startFluctuation(element, target) {
+      setInterval(() => {
+        const current = parseInt(element.textContent.replace(/,/g, ''));
+        const fluctuation = Math.floor(Math.random() * 5) - 2;
+        const newValue = Math.max(target - 3, Math.min(target + 3, current + fluctuation));
+        element.textContent = newValue.toLocaleString();
+      }, 200 + Math.random() * 300);
+    }
+
+    setTimeout(() => {
+      animateCounter('counter1', 608, 2500);
+      animateCounter('counter2', 137, 2000);
+      animateCounter('counter3', 500, 3000);
+    }, 800);
+
+    // ============ 故障文字效果 ============
+    const glitchTitle = document.getElementById('glitchTitle');
+    const glitchChars = '!@#$%^&*()_+-=[]{}|;:,.<>?/~`';
+    const originalText = 'ZENG XUEZHANG';
+
+    setInterval(() => {
+      if (Math.random() > 0.8) {
+        glitchTitle.classList.add('glitch-active');
+        let iterations = 0;
+        const maxIterations = 4 + Math.floor(Math.random() * 4);
+
+        const glitchInterval = setInterval(() => {
+          const glitched = originalText.split('').map((char) => {
+            if (Math.random() > 0.65 && char !== ' ') {
+              return glitchChars[Math.floor(Math.random() * glitchChars.length)];
+            }
+            return char;
+          }).join('');
+
+          const textNodes = glitchTitle.childNodes;
+          textNodes[0].textContent = glitched;
+          const redShadow = glitchTitle.querySelector('.glitch-shadow--red');
+          const cyanShadow = glitchTitle.querySelector('.glitch-shadow--cyan');
+          if (redShadow) redShadow.textContent = glitched;
+          if (cyanShadow) cyanShadow.textContent = glitched;
+
+          iterations++;
+
+          if (iterations >= maxIterations) {
+            clearInterval(glitchInterval);
+            textNodes[0].textContent = originalText;
+            if (redShadow) redShadow.textContent = originalText;
+            if (cyanShadow) cyanShadow.textContent = originalText;
+            glitchTitle.classList.remove('glitch-active');
+          }
+        }, 60);
+      }
+    }, 3500);
+
+    // ============ 随机字符行 ============
+    const katakana = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+    
+    function generateGlitchRow(elementId, count) {
+      const element = document.getElementById(elementId);
+      setInterval(() => {
+        let html = '';
+        for (let i = 0; i < count; i++) {
+          const char = Math.random() > 0.5 ? '01'[Math.floor(Math.random() * 2)] : katakana[Math.floor(Math.random() * katakana.length)];
+          html += `<span class="cyber-counter__glitch-char" style="animation-delay: ${i * 0.05}s">${char}</span>`;
+        }
+        element.innerHTML = html;
+      }, 120);
+    }
+
+    generateGlitchRow('glitchRow1', 8);
+    generateGlitchRow('glitchRow2', 8);
+    generateGlitchRow('glitchRow3', 8);
+
+    // ============ 二进制数据流 ============
+    function generateDataStream(elementId, count) {
+      const element = document.getElementById(elementId);
+      let html = '';
+      for (let i = 0; i < count; i++) {
+        html += `<span class="cyber-hero__data-char" style="animation-delay: ${i * 0.1}s">${Math.random() > 0.5 ? '1' : '0'}</span>`;
+      }
+      element.innerHTML = html;
+    }
+
+    generateDataStream('dataStream1', 18);
+    generateDataStream('dataStream2', 14);
+
+    // ============ 实时时钟 ============
+    function updateTime() {
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      document.getElementById('cyberTime').textContent = `${hours}:${minutes}:${seconds}`;
+    }
+
+    updateTime();
+    setInterval(updateTime, 1000);
+
+    console.log('Cyberpunk Hero Section loaded successfully!');
+  </script>
+</body>
+</html>

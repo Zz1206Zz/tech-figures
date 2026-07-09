@@ -1,0 +1,36 @@
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 113, 227, 0.5);
+  background: rgba(0, 113, 227, 0.08);
+  box-shadow:
+    0 0 12px rgba(0, 113, 227, 0.6),
+    0 0 24px rgba(0, 113, 227, 0.4),
+    inset 0 0 6px rgba(0, 113, 227, 0.3);
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate3d(-50%, -50%, 0);
+  transition:
+    width 0.15s ease,
+    height 0.15s ease,
+    background 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+  mix-blend-mode: difference;
+  will-change: transform;
+}
+
+.custom-cursor.hover {
+  width: 40px;
+  height: 40px;
+  background: rgba(0, 113, 227, 0.18);
+  border-color: rgba(0, 113, 227, 0.8);
+  box-shadow:
+    0 0 18px rgba(0, 113, 227, 0.8),
+    0 0 36px rgba(0, 113, 227, 0.5),
+    inset 0 0 10px rgba(0, 113, 227, 0.5);
+}
