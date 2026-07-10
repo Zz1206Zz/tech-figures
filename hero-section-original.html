@@ -974,6 +974,51 @@
             }
         }
 
+        /* ===== REVEAL EFFECT ===== */
+        .reveal-wrapper {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 2;
+        }
+        .reveal-base-img {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            height: 100%;
+            width: auto;
+            max-width: 100%;
+            object-fit: cover;
+            object-position: bottom center;
+            mix-blend-mode: multiply;
+            filter: brightness(1.05) saturate(1.15) contrast(1.08) drop-shadow(0 0 40px rgba(255,100,0,0.1));
+        }
+        .reveal-overlay-img {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            height: 100%;
+            width: auto;
+            max-width: 100%;
+            object-fit: cover;
+            object-position: bottom center;
+            opacity: 1;
+            mix-blend-mode: normal;
+            filter: none;
+            mask-image: radial-gradient(circle 100px at 50% 50%, black 0%, rgba(0,0,0,0.9) 40%, rgba(0,0,0,0.5) 70%, transparent 100%);
+            -webkit-mask-image: radial-gradient(circle 100px at 50% 50%, black 0%, rgba(0,0,0,0.9) 40%, rgba(0,0,0,0.5) 70%, transparent 100%);
+            mask-size: 220px 220px;
+            -webkit-mask-size: 220px 220px;
+            mask-repeat: no-repeat;
+            -webkit-mask-repeat: no-repeat;
+            mask-position: 50% 50%;
+            -webkit-mask-position: 50% 50%;
+        }
+
         /* Reduced motion */
         @media (prefers-reduced-motion: reduce) {
             .hero-entrance {
@@ -1267,20 +1312,14 @@
                         filter: blur(70px);
                     "></div>
 
-                    <!-- Character image: flush to bottom, no white edge, blended with background -->
-                    <img src="./assets/hero-person.png" alt="Tech Figures Character" style="
-                        position: absolute;
-                        bottom: 0;
-                        right: 0;
-                        z-index: 2;
-                        height: 100%;
-                        width: auto;
-                        max-width: 100%;
-                        object-fit: cover;
-                        object-position: bottom center;
-                        mix-blend-mode: multiply;
-                        filter: brightness(1.05) saturate(1.15) contrast(1.08) drop-shadow(0 0 40px rgba(255,100,0,0.1));
-                    ">
+                    <!-- Reveal wrapper: contains both original and reveal images -->
+                    <div class="reveal-wrapper">
+                        <!-- Original character image (base) -->
+                        <img src="./assets/hero-person.png" alt="Tech Figures Character" class="reveal-base-img">
+                        
+                        <!-- Reveal layer: Ultraman armor (shown through circular mask) -->
+                        <img src="./assets/hero-person-alt.png" alt="Ultraman Armor Reveal" class="reveal-overlay-img" id="reveal-overlay-img">
+                    </div>
                 </div>
             </div>
 
@@ -1947,6 +1986,66 @@
             }
 
             animate();
+
+        })();
+
+        // ===== 9. Mouse Reveal Effect (Ultraman) =====
+        (function() {
+            if (window.innerWidth < 768) return;
+
+            var revealImg = document.getElementById('reveal-overlay-img');
+            var container = document.querySelector('.character-bottom-right');
+            var heroSection = document.getElementById('hero-section');
+
+            if (!revealImg || !container || !heroSection) {
+                return;
+            }
+
+            var targetX = 50;
+            var targetY = 50;
+            var currentX = 50;
+            var currentY = 50;
+            var isMouseInside = false;
+            var currentOpacity = 0;
+            var targetOpacity = 0;
+
+            function updateMaskPosition() {
+                currentX += (targetX - currentX) * 0.15;
+                currentY += (targetY - currentY) * 0.15;
+                currentOpacity += (targetOpacity - currentOpacity) * 0.15;
+
+                revealImg.style.maskPosition = currentX + '% ' + currentY + '%';
+                revealImg.style.webkitMaskPosition = currentX + '% ' + currentY + '%';
+                revealImg.style.opacity = currentOpacity;
+
+                requestAnimationFrame(updateMaskPosition);
+            }
+
+            updateMaskPosition();
+
+            function checkMouseInside(e) {
+                var containerRect = container.getBoundingClientRect();
+                var mouseX = e.clientX - containerRect.left;
+                var mouseY = e.clientY - containerRect.top;
+
+                if (mouseX >= 0 && mouseX <= containerRect.width &&
+                    mouseY >= 0 && mouseY <= containerRect.height) {
+                    isMouseInside = true;
+                    targetOpacity = 1;
+                } else {
+                    isMouseInside = false;
+                    targetOpacity = 0;
+                }
+
+                targetX = Math.max(0, Math.min(100, (mouseX / containerRect.width) * 100));
+                targetY = Math.max(0, Math.min(100, (mouseY / containerRect.height) * 100));
+            }
+
+            heroSection.addEventListener('mousemove', checkMouseInside);
+            heroSection.addEventListener('mouseleave', function() {
+                isMouseInside = false;
+                targetOpacity = 0;
+            });
         })();
     });
     </script>
