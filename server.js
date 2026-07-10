@@ -20,7 +20,7 @@ const mimeTypes = {
 };
 
 const server = http.createServer((req, res) => {
-  let filePath = path.join(ROOT, req.url === '/' ? 'cyber-hero-demo.html' : req.url);
+  let filePath = path.join(ROOT, req.url === '/' ? 'index.html' : req.url);
   
   const extname = path.extname(filePath).toLowerCase();
   const contentType = mimeTypes[extname] || 'application/octet-stream';
