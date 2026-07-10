@@ -721,6 +721,222 @@
             100% { background-position: 300px 300px; }
         }
 
+        /* ===== DATAFLOW EFFECTS ===== */
+        .dataflow-container {
+            position: absolute;
+            left: 38%;
+            top: 12%;
+            width: 360px;
+            height: 75vh;
+            z-index: 2;
+            pointer-events: none;
+            opacity: 0.85;
+        }
+        .dataflow-streams {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 8px;
+            box-sizing: border-box;
+            mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+        }
+        .data-stream {
+            width: 20px;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+            font-family: var(--font-mono);
+            font-size: 16px;
+            line-height: 2;
+            text-align: center;
+            font-weight: 700;
+        }
+        .data-stream-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            animation: stream-scroll linear infinite;
+        }
+        @keyframes stream-scroll {
+            0% { transform: translateY(-50%); }
+            100% { transform: translateY(0); }
+        }
+        .data-stream.slow .data-stream-content { animation-duration: 25s; }
+        .data-stream.medium .data-stream-content { animation-duration: 15s; }
+        .data-stream.fast .data-stream-content { animation-duration: 8s; }
+        
+        .data-stream.opacity-1 { color: rgba(255,250,240,0.2); text-shadow: 0 0 8px rgba(255,220,180,0.3); }
+        .data-stream.opacity-2 { color: rgba(255,252,245,0.3); text-shadow: 0 0 10px rgba(255,220,180,0.4); }
+        .data-stream.opacity-3 { color: rgba(255,255,250,0.5); text-shadow: 0 0 12px rgba(255,220,180,0.6); }
+        .data-stream.opacity-4 { color: rgba(255,255,255,0.75); text-shadow: 0 0 15px rgba(255,220,180,0.8); }
+        
+        .data-stream .highlight {
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255,220,180,0.9), 0 0 20px rgba(255,170,100,0.5);
+            font-size: 16px;
+        }
+
+        /* Holographic Data Panel */
+        .holo-panel {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 220px;
+            padding: 18px 16px;
+            background: rgba(255,170,100,0.08);
+            border: 1px solid rgba(255,200,150,0.3);
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            color: rgba(255,220,180,0.85);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            box-shadow: 
+                0 0 30px rgba(255,170,100,0.12),
+                inset 0 0 25px rgba(255,170,100,0.06);
+            z-index: 3;
+        }
+        .holo-panel::before,
+        .holo-panel::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border: 1px solid rgba(255,200,150,0.5);
+        }
+        .holo-panel::before {
+            top: -1px;
+            left: -1px;
+            border-right: none;
+            border-bottom: none;
+        }
+        .holo-panel::after {
+            bottom: -1px;
+            right: -1px;
+            border-left: none;
+            border-top: none;
+        }
+        .holo-panel-corner-tr,
+        .holo-panel-corner-bl {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border: 1px solid rgba(255,200,150,0.5);
+        }
+        .holo-panel-corner-tr {
+            top: -1px;
+            right: -1px;
+            border-left: none;
+            border-bottom: none;
+        }
+        .holo-panel-corner-bl {
+            bottom: -1px;
+            left: -1px;
+            border-right: none;
+            border-top: none;
+        }
+        .holo-panel-header {
+            font-size: 10px;
+            font-weight: 600;
+            color: rgba(255,220,180,0.95);
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255,200,150,0.15);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        .holo-panel-header .status-dot {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #7FFF7F;
+            margin-right: 6px;
+            box-shadow: 0 0 6px #7FFF7F;
+            animation: status-blink 2s ease-in-out infinite;
+        }
+        @keyframes status-blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        .holo-panel-body {
+            font-size: 9px;
+            line-height: 1.8;
+        }
+        .holo-panel-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+        .holo-panel-label {
+            color: rgba(255,200,150,0.5);
+        }
+        .holo-panel-value {
+            color: rgba(255,220,180,0.85);
+        }
+        .holo-panel-progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255,200,150,0.1);
+            border-radius: 2px;
+            margin-top: 6px;
+            overflow: hidden;
+        }
+        .holo-panel-progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, rgba(255,170,100,0.6), rgba(255,220,180,0.9));
+            border-radius: 2px;
+            animation: progress-pulse 3s ease-in-out infinite;
+        }
+        @keyframes progress-pulse {
+            0%, 100% { width: 65%; }
+            50% { width: 85%; }
+        }
+        .holo-panel-scanline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, rgba(255,220,180,0.4), transparent);
+            animation: scanline-move 4s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes scanline-move {
+            0% { top: 0; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+        .holo-panel-glow {
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            right: -20px;
+            bottom: -20px;
+            background: radial-gradient(ellipse at center, rgba(255,170,100,0.08) 0%, transparent 70%);
+            pointer-events: none;
+            animation: glow-pulse 4s ease-in-out infinite;
+        }
+        @keyframes glow-pulse {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+        .holo-panel {
+            animation: panel-flicker 8s ease-in-out infinite;
+        }
+        @keyframes panel-flicker {
+            0%, 95%, 97%, 100% { opacity: 1; }
+            96% { opacity: 0.85; }
+            98% { opacity: 0.9; }
+        }
+
         /* ===== ULTRA COOL EFFECTS ===== */
 
         /* 16. Glitch Text Effect */
@@ -969,7 +1185,8 @@
             .magic-rings-container,
             .aurora-blob,
             .data-node,
-            .grid-dots {
+            .grid-dots,
+            .dataflow-container {
                 display: none !important;
             }
         }
@@ -1281,6 +1498,42 @@
             <div class="neon-corner neon-corner-br"></div>
 
             <!-- ===== END MIDDLE AREA EFFECTS ===== -->
+
+            <!-- ===== DATAFLOW EFFECTS ===== -->
+            <div class="dataflow-container">
+                <div class="dataflow-streams" id="dataflow-streams">
+                </div>
+                
+                <!-- Holographic Data Panel -->
+                <div class="holo-panel">
+                    <div class="holo-panel-glow"></div>
+                    <div class="holo-panel-scanline"></div>
+                    <div class="holo-panel-corner-tr"></div>
+                    <div class="holo-panel-corner-bl"></div>
+                    
+                    <div class="holo-panel-header">
+                        <span class="status-dot"></span>SYS.STATUS
+                    </div>
+                    
+                    <div class="holo-panel-body">
+                        <div class="holo-panel-row">
+                            <span class="holo-panel-label">CPU</span>
+                            <span class="holo-panel-value" id="holo-cpu">67%</span>
+                        </div>
+                        <div class="holo-panel-row">
+                            <span class="holo-panel-label">MEM</span>
+                            <span class="holo-panel-value" id="holo-mem">4.2G</span>
+                        </div>
+                        <div class="holo-panel-row">
+                            <span class="holo-panel-label">NET</span>
+                            <span class="holo-panel-value" id="holo-net">128ms</span>
+                        </div>
+                        <div class="holo-panel-progress-bar">
+                            <div class="holo-panel-progress-fill"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- CHARACTER: Bottom-Right, Flush to Bottom, No White Edge -->
             <div class="character-bottom-right hero-entrance hero-entrance-6" style="width: 550px; max-width: 50vw; height: 100vh; padding-right: 0px;">
@@ -1987,6 +2240,59 @@
 
             animate();
 
+        })();
+
+        // ===== 8.5. Dataflow Streams Effect =====
+        (function() {
+            if (window.innerWidth < 768) return;
+
+            var container = document.getElementById('dataflow-streams');
+            if (!container) return;
+
+            var chars = '0123456789ABCDEF';
+            var words = ['SYSTEM', 'DATA', 'SIGNAL', 'QUANTUM', 'NEURAL', 'PULSE', 'MATRIX', 'NEXUS', 'FLUX', 'OMEGA', 'SYNC', 'NODE'];
+            var speeds = ['slow', 'medium', 'fast', 'medium', 'slow', 'fast', 'medium', 'slow', 'fast', 'medium', 'slow'];
+            var opacities = ['opacity-1', 'opacity-2', 'opacity-3', 'opacity-2', 'opacity-4', 'opacity-1', 'opacity-3', 'opacity-2', 'opacity-4', 'opacity-3', 'opacity-2'];
+            var streamCount = 11;
+
+            function generateStreamContent() {
+                var content = '';
+                var chars = '0123456789ABCDEF';
+                var length = 50;
+                for (var i = 0; i < length; i++) {
+                    if (Math.random() < 0.08) {
+                        content += '<span class="highlight">' + chars.charAt(Math.floor(Math.random() * chars.length)) + '</span>';
+                    } else {
+                        content += '<span>' + chars.charAt(Math.floor(Math.random() * 10)) + '</span>';
+                    }
+                }
+                return content + content + content;
+            }
+
+            for (var i = 0; i < streamCount; i++) {
+                var stream = document.createElement('div');
+                stream.className = 'data-stream ' + speeds[i] + ' ' + opacities[i];
+                
+                var content = document.createElement('div');
+                content.className = 'data-stream-content';
+                content.innerHTML = generateStreamContent();
+                content.style.animationDelay = (-Math.random() * 20) + 's';
+                
+                stream.appendChild(content);
+                container.appendChild(stream);
+            }
+
+            var holoCpu = document.getElementById('holo-cpu');
+            var holoMem = document.getElementById('holo-mem');
+            var holoNet = document.getElementById('holo-net');
+            
+            if (holoCpu && holoMem && holoNet) {
+                setInterval(function() {
+                    holoCpu.textContent = Math.floor(50 + Math.random() * 40) + '%';
+                    holoMem.textContent = (3 + Math.random() * 3).toFixed(1) + 'G';
+                    holoNet.textContent = Math.floor(80 + Math.random() * 100) + 'ms';
+                }, 2000);
+            }
         })();
 
         // ===== 9. Mouse Reveal Effect (Ultraman) =====
